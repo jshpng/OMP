@@ -1,22 +1,21 @@
 import { OmpContentWrapper, OmpTable, OmpModal } from "@/components";
-import { Button, Input, Form, message, Menu } from "antd";
+import { Button, Input, Form, message } from "antd";
 import { useState, useEffect, useRef } from "react";
 import {
   handleResponse,
   _idxInit,
   refreshTime,
-  MessageTip,
   nonEmptyProcessing,
   logout,
   isPassword,
-  encrypt
+  encrypt,
 } from "@/utils/utils";
 import { fetchGet, fetchPost } from "@/utils/request";
 import { apiRequest } from "@/config/requestApi";
 //import updata from "@/store_global/globalStore";
 import { useDispatch } from "react-redux";
 import moment from "moment";
-import { SearchOutlined, SettingFilled } from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 
 const UserManagement = () => {
   const dispatch = useDispatch();
@@ -72,11 +71,14 @@ const UserManagement = () => {
       //sorter: (a, b) => a.is_superuser - b.is_superuser,
       //sortDirections: ["descend", "ascend"],
       align: "center",
-      render: (text) => {
+      render: (text, record) => {
         if (text) {
           return "普通管理员";
         } else {
-          return "超级管理员";
+          if (record.username == "omp") {
+            return "只读用户";
+          }
+          return "普通用户";
         }
       },
     },
@@ -245,7 +247,7 @@ const UserManagement = () => {
                 {username:e},
                 pagination.ordering
               );
-          }} 
+          }}
           style={{ width: 200 }} /> */}
           <Input
             placeholder="请输入用户名"
@@ -386,7 +388,7 @@ const UserManagement = () => {
                 if (value) {
                   if (!isPassword(value)) {
                     if (value.length < 8) {
-                      return Promise.reject("密码长度为8到16位");
+                      return Promise.reject("密码长度需大于8位");
                     }
                     return Promise.resolve("success");
                   } else {
@@ -401,7 +403,7 @@ const UserManagement = () => {
             },
           ]}
         >
-          <Input.Password maxLength={16} placeholder="请输入当前密码" />
+          <Input.Password placeholder="请输入当前密码" />
         </Form.Item>
         <Form.Item
           label="新密码"
@@ -421,7 +423,7 @@ const UserManagement = () => {
                   }
                   if (!isPassword(value)) {
                     if (value.length < 8) {
-                      return Promise.reject("密码长度为8到16位");
+                      return Promise.reject("密码长度需大于8位");
                     }
                     return Promise.resolve("success");
                   } else {
@@ -436,7 +438,7 @@ const UserManagement = () => {
             },
           ]}
         >
-          <Input.Password maxLength={16} placeholder="请设置新密码" />
+          <Input.Password placeholder="请设置新密码" />
         </Form.Item>
         <Form.Item
           label="确认密码"
@@ -453,7 +455,7 @@ const UserManagement = () => {
                 if (value) {
                   if (!isPassword(value)) {
                     if (value.length < 8) {
-                      return Promise.reject("密码长度为8到16位");
+                      return Promise.reject("密码长度需大于8位");
                     }
                     if (
                       passwordModalForm.getFieldValue().new_password1 ===
@@ -476,7 +478,7 @@ const UserManagement = () => {
             },
           ]}
         >
-          <Input.Password maxLength={16} placeholder="请再次输入新密码" />
+          <Input.Password placeholder="请再次输入新密码" />
         </Form.Item>
       </OmpModal>
     </OmpContentWrapper>

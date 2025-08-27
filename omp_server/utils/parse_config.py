@@ -31,6 +31,7 @@ with open(config_file_path, "r") as fp:
 
 GLOBAL_RUNUSER = CONFIG_DIC.get("global_runuser")
 LOCAL_IP = CONFIG_DIC.get("local_ip")
+TENGINE_PORT = CONFIG_DIC.get("tengine")
 SSH_CMD_TIMEOUT = CONFIG_DIC.get("ssh_cmd_timeout", 60)
 SSH_CHECK_TIMEOUT = CONFIG_DIC.get("ssh_check_timeout", 10)
 THREAD_POOL_MAX_WORKERS = CONFIG_DIC.get("thread_pool_max_workers", 20)
@@ -39,7 +40,13 @@ TOKEN_EXPIRATION = CONFIG_DIC.get("token_expiration", 1)
 MONITOR_PORT = CONFIG_DIC.get("monitor_port")
 GRAFANA_API_KEY = CONFIG_DIC.get("grafana_api_key")
 PROMETHEUS_AUTH = CONFIG_DIC.get("prometheus_auth", {})
+GRAFANA_AUTH = CONFIG_DIC.get("grafana_auth", {})
 LOKI_CONFIG = CONFIG_DIC.get("loki_config", {})
+HEALTH_REDIS_TIMEOUT = int(CONFIG_DIC.get("health_redis_timeout", 60)) * 60
+HEALTH_REQUEST_COUNT = int(CONFIG_DIC.get("health_request_count", 6))
+HEALTH_REQUEST_SLEEP = int(CONFIG_DIC.get("health_request_sleep", 5))
+CLEAR_DB = CONFIG_DIC.get("clear_table", {})
+SERVICE_DISCOVERY = CONFIG_DIC.get("service_discovery", [])
 OMP_REDIS_HOST = os.getenv(
     "OMP_REDIS_HOST",
     CONFIG_DIC.get("redis", {}).get("host")
@@ -72,3 +79,4 @@ BASIC_ORDER = CONFIG_DIC.get("basic_order", {})
 AFFINITY_FIELD = CONFIG_DIC.get("affinity", {})
 HADOOP_ROLE = CONFIG_DIC.get("hadoop_role", {})
 HOSTNAME_PREFIX = CONFIG_DIC.get("hostname_prefix", {})
+BACKUP_SERVICE = CONFIG_DIC.get("backup_service", [])
